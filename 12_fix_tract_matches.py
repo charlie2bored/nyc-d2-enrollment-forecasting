@@ -13,7 +13,7 @@ import urllib.request
 import urllib.parse
 import pandas as pd
 
-API_KEY = "REDACTED-CENSUS-API-KEY"
+API_KEY = os.environ["CENSUS_API_KEY"]
 
 mapping = pd.read_csv("C:/Users/iamch/enrollment-forecast/school_tract_mapping.csv", dtype={"tract_fips": str})
 

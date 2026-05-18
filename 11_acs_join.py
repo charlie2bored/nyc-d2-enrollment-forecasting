@@ -12,7 +12,7 @@ import json
 import urllib.request
 import pandas as pd
 
-API_KEY = os.environ.get("CENSUS_API_KEY", "REDACTED-CENSUS-API-KEY")
+API_KEY = os.environ["CENSUS_API_KEY"]
 
 url = (
     "https://api.census.gov/data/2022/acs/acs5"
