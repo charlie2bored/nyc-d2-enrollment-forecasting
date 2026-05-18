@@ -1,0 +1,16 @@
+year_start,school_year,is_forecast,is_pre_covid,is_covid_period,is_post_covid_observed,is_backtest_window
+2013,2013-14,False,True,False,False,False
+2014,2014-15,False,True,False,False,False
+2015,2015-16,False,True,False,False,False
+2016,2016-17,False,True,False,False,False
+2017,2017-18,False,True,False,False,False
+2018,2018-19,False,True,False,False,False
+2019,2019-20,False,True,False,False,False
+2020,2020-21,False,False,True,True,False
+2021,2021-22,False,False,True,True,False
+2022,2022-23,False,False,False,True,True
+2023,2023-24,False,False,False,True,True
+2024,2024-25,False,False,False,True,True
+2025,2025-26,True,False,False,False,False
+2026,2026-27,True,False,False,False,False
+2027,2027-28,True,False,False,False,False

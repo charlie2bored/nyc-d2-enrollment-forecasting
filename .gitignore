@@ -1,0 +1,21 @@
+# NYSED raw databases (22 MB each — too big for git, and not needed once
+# the 12-year stitched CSV is generated). Anyone reproducing can re-download
+# via the URLs documented in script 14.
+nysed/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Power BI temp files
+*.pbix.tmp
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Census API response cache (intermediate, regeneratable)
+acs_zcta_income_raw.json
