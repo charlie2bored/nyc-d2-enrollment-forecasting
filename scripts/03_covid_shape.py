@@ -1,8 +1,9 @@
 """Step 3: build K-5 enrollment time series for D2 elementary, characterize COVID impact."""
 import pandas as pd
+from paths import DERIVED, RAW
 
-df = pd.read_csv("C:/Users/iamch/enrollment-forecast/demographic_snapshot.csv")
-dbns = pd.read_csv("C:/Users/iamch/enrollment-forecast/d2_elementary_dbns.csv")["DBN"].tolist()
+df = pd.read_csv(RAW / "demographic_snapshot.csv")
+dbns = pd.read_csv(DERIVED / "d2_elementary_dbns.csv")["DBN"].tolist()
 
 elem_grade_cols = ["Grade K", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5"]
 d2e = df[df["DBN"].isin(dbns)].copy()
@@ -47,5 +48,5 @@ print()
 print("=== Aggregate (sum) trajectory ===")
 print(ts[yr_cols].sum().to_string())
 
-ts.to_csv("C:/Users/iamch/enrollment-forecast/d2_elementary_timeseries.csv")
+ts.to_csv(DERIVED / "d2_elementary_timeseries.csv")
 print("\nSaved per-school time series to d2_elementary_timeseries.csv")

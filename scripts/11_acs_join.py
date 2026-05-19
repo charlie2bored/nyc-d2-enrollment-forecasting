@@ -11,6 +11,7 @@ import os
 import json
 import urllib.request
 import pandas as pd
+from paths import DERIVED, POWERBI
 
 API_KEY = os.environ["CENSUS_API_KEY"]
 
@@ -36,10 +37,10 @@ print(f"Pulled {len(acs)} Manhattan tracts")
 print(f"Tracts with valid income: {acs['median_household_income'].notna().sum()}")
 print(f"Income range: ${acs['median_household_income'].min():,.0f} - ${acs['median_household_income'].max():,.0f}")
 
-acs.to_csv("C:/Users/iamch/enrollment-forecast/acs_manhattan_income.csv", index=False)
+acs.to_csv(DERIVED / "acs_manhattan_income.csv", index=False)
 
 # Join to our school -> tract mapping
-mapping = pd.read_csv("C:/Users/iamch/enrollment-forecast/school_tract_mapping.csv", dtype={"tract_fips": str})
+mapping = pd.read_csv(DERIVED / "school_tract_mapping.csv", dtype={"tract_fips": str})
 mapping["tract_fips"] = mapping["tract_fips"].str.zfill(6)
 
 joined = mapping.merge(acs[["tract_fips", "median_household_income"]], on="tract_fips", how="left")
@@ -61,14 +62,14 @@ print(joined.sort_values("median_household_income")[
 
 # Save the per-school income lookup
 school_income = joined[["DBN", "tract_fips", "median_household_income"]].copy()
-school_income.to_csv("C:/Users/iamch/enrollment-forecast/school_income.csv", index=False)
+school_income.to_csv(DERIVED / "school_income.csv", index=False)
 
 # ----------------------------------------------------------------------------
 # Update dim_school with income, then redo the correlation analysis
 # ----------------------------------------------------------------------------
-dim_school = pd.read_csv("C:/Users/iamch/enrollment-forecast/dim_school.csv")
+dim_school = pd.read_csv(POWERBI / "dim_school.csv")
 dim_school = dim_school.merge(school_income[["DBN", "median_household_income"]], on="DBN", how="left")
-dim_school.to_csv("C:/Users/iamch/enrollment-forecast/dim_school.csv", index=False)
+dim_school.to_csv(POWERBI / "dim_school.csv", index=False)
 
 # Correlation of catchment income vs enrollment decline (modeled schools only)
 modeled = dim_school[dim_school["Risk_Flag"] != "Excluded"].copy()

@@ -1,11 +1,12 @@
 """Step 13: inspect NYSED BEDS Day Enrollment data, find D2 Manhattan schools."""
 from access_parser import AccessParser
 import pandas as pd
+from paths import NYSED
 
 paths = {
-    "2024-25": r"C:\Users\iamch\enrollment-forecast\nysed\2025\ENROLL2025_20251217.accdb",
-    "2023-24": r"C:\Users\iamch\enrollment-forecast\nysed\2024\ENROLL2024_20241105..accdb",
-    "2022-23": r"C:\Users\iamch\enrollment-forecast\nysed\2023\ENROLL2023_20231207.accdb",
+    "2024-25": NYSED / "2025" / "ENROLL2025_20251217.accdb",
+    "2023-24": NYSED / "2024" / "ENROLL2024_20241105..accdb",
+    "2022-23": NYSED / "2023" / "ENROLL2023_20231207.accdb",
 }
 
 for label, path in paths.items():

@@ -1,7 +1,8 @@
 """Step 6: identify all phase-in schools (where K-5 wasn't fully populated early)."""
 import pandas as pd
+from paths import DERIVED
 
-df = pd.read_csv("C:/Users/iamch/enrollment-forecast/d2_elementary_9yr.csv")
+df = pd.read_csv(DERIVED / "d2_elementary_9yr.csv")
 elem_grade_cols = ["Grade K", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5"]
 
 # For each school, find the first year all K-5 grades had >0 students (= "mature year")

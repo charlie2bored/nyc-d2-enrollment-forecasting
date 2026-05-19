@@ -1,7 +1,8 @@
 """Step 2: filter to District 2 Manhattan elementary schools, check coverage."""
 import pandas as pd
+from paths import DERIVED, RAW
 
-df = pd.read_csv("C:/Users/iamch/enrollment-forecast/demographic_snapshot.csv")
+df = pd.read_csv(RAW / "demographic_snapshot.csv")
 
 # District 2, Manhattan: DBN starts with "02M"
 d2 = df[df["DBN"].str.startswith("02M")].copy()
@@ -50,7 +51,7 @@ print(pure_elem[cols].sort_values("k5_enroll", ascending=False).to_string(index=
 # Save the elementary DBNs
 pure_elem_dbns = pure_elem["DBN"].tolist()
 pd.Series(pure_elem_dbns).to_csv(
-    "C:/Users/iamch/enrollment-forecast/d2_elementary_dbns.csv",
+    DERIVED / "d2_elementary_dbns.csv",
     index=False, header=["DBN"]
 )
 print(f"\nSaved {len(pure_elem_dbns)} DBNs to d2_elementary_dbns.csv")

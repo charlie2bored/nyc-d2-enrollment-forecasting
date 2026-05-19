@@ -10,11 +10,12 @@ Star schema lets a single Power BI matrix or chart switch between scenarios or
 models via slicers, without rebuilding visuals.
 """
 import pandas as pd
+from paths import OUTPUT, POWERBI
 
-pw = pd.read_csv("C:/Users/iamch/enrollment-forecast/forecasts_piecewise.csv")
-pr = pd.read_csv("C:/Users/iamch/enrollment-forecast/forecasts_prophet.csv")
-summary = pd.read_csv("C:/Users/iamch/enrollment-forecast/school_summary_piecewise.csv")
-excluded = pd.read_csv("C:/Users/iamch/enrollment-forecast/schools_excluded.csv")
+pw = pd.read_csv(OUTPUT / "forecasts_piecewise.csv")
+pr = pd.read_csv(OUTPUT / "forecasts_prophet.csv")
+summary = pd.read_csv(OUTPUT / "school_summary_piecewise.csv")
+excluded = pd.read_csv(OUTPUT / "schools_excluded.csv")
 
 # -----------------------------------------------------------------------------
 # Unify into one fact table
@@ -63,7 +64,7 @@ fact_out = fact_out.rename(columns={
     "yhat_lower": "Enrollment_Lower",
     "yhat_upper": "Enrollment_Upper",
 })
-fact_out.to_csv("C:/Users/iamch/enrollment-forecast/fact_forecasts.csv", index=False)
+fact_out.to_csv(POWERBI / "fact_forecasts.csv", index=False)
 
 # -----------------------------------------------------------------------------
 # dim_school
@@ -111,7 +112,7 @@ excluded_minimal = excluded_minimal[["DBN", "School Name", "Risk_Flag", "Neighbo
 
 dim_school = pd.concat([dim_school, excluded_minimal], ignore_index=True)
 dim_school["Exclusion_Reason"] = dim_school["Exclusion_Reason"].fillna("")
-dim_school.to_csv("C:/Users/iamch/enrollment-forecast/dim_school.csv", index=False)
+dim_school.to_csv(POWERBI / "dim_school.csv", index=False)
 
 # -----------------------------------------------------------------------------
 # dim_year
@@ -124,7 +125,7 @@ dim_year = pd.DataFrame({
     "is_pre_covid": [y < 2020 for y in years],
     "is_covid_period": [y in (2020, 2021) for y in years],
 })
-dim_year.to_csv("C:/Users/iamch/enrollment-forecast/dim_year.csv", index=False)
+dim_year.to_csv(POWERBI / "dim_year.csv", index=False)
 
 # -----------------------------------------------------------------------------
 # Summary printout

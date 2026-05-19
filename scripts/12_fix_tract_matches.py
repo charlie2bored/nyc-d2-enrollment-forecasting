@@ -12,10 +12,11 @@ import time
 import urllib.request
 import urllib.parse
 import pandas as pd
+from paths import DERIVED, POWERBI
 
 API_KEY = os.environ["CENSUS_API_KEY"]
 
-mapping = pd.read_csv("C:/Users/iamch/enrollment-forecast/school_tract_mapping.csv", dtype={"tract_fips": str})
+mapping = pd.read_csv(DERIVED / "school_tract_mapping.csv", dtype={"tract_fips": str})
 
 def geocode_tract(lat: float, lon: float) -> str | None:
     """Return 6-digit current tract code for a lat/long via the Census Geocoder."""
@@ -53,7 +54,7 @@ for _, row in mapping.iterrows():
     time.sleep(0.1)
 
 mapping["tract_fips_2020"] = new_tracts
-mapping.to_csv("C:/Users/iamch/enrollment-forecast/school_tract_mapping.csv", index=False)
+mapping.to_csv(DERIVED / "school_tract_mapping.csv", index=False)
 
 # Re-pull ACS for completeness
 url = (
@@ -83,13 +84,13 @@ if len(missing):
 
 # Save corrected lookup
 school_income = joined[["DBN", "tract_fips_2020", "median_household_income"]].copy()
-school_income.to_csv("C:/Users/iamch/enrollment-forecast/school_income.csv", index=False)
+school_income.to_csv(DERIVED / "school_income.csv", index=False)
 
 # Update dim_school
-dim_school = pd.read_csv("C:/Users/iamch/enrollment-forecast/dim_school.csv")
+dim_school = pd.read_csv(POWERBI / "dim_school.csv")
 dim_school = dim_school.drop(columns=["median_household_income"], errors="ignore")
 dim_school = dim_school.merge(school_income[["DBN", "median_household_income"]], on="DBN", how="left")
-dim_school.to_csv("C:/Users/iamch/enrollment-forecast/dim_school.csv", index=False)
+dim_school.to_csv(POWERBI / "dim_school.csv", index=False)
 
 # Re-run the correlation
 modeled = dim_school[dim_school["Risk_Flag"] != "Excluded"].dropna(

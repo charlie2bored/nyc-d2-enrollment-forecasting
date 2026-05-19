@@ -1,6 +1,7 @@
 """
 Step 14: extract 2022-23, 2023-24, 2024-25 K-5 enrollment for our 30 D2 schools
 from the NYSED BEDS Day Enrollment database, and stitch onto our existing 9-year
+from paths import DERIVED, NYSED
 NYC DOE time series.
 
 BEDS code mapping
@@ -28,7 +29,7 @@ and call it out in the case study.
 from access_parser import AccessParser
 import pandas as pd
 
-ACCDB = r"C:\Users\iamch\enrollment-forecast\nysed\2025\ENROLL2025_20251217.accdb"
+ACCDB = NYSED / "2025" / "ENROLL2025_20251217.accdb"
 
 p = AccessParser(ACCDB)
 nysed = pd.DataFrame(p.parse_table("BEDS Day Enrollment"))
@@ -71,7 +72,7 @@ recent = recent.rename(columns={
 })
 
 # Filter to our 30 modeled schools (load the dbn list)
-modeled_dbns = pd.read_csv("C:/Users/iamch/enrollment-forecast/d2_elementary_dbns.csv")["DBN"].tolist()
+modeled_dbns = pd.read_csv(DERIVED / "d2_elementary_dbns.csv")["DBN"].tolist()
 # Exclude the 2 phase-in schools we already excluded
 EXCLUDE = ["02M281", "02M340"]
 modeled_dbns = [d for d in modeled_dbns if d not in EXCLUDE]
@@ -100,7 +101,7 @@ print(f"  For comparison, 2021-22 (NYC DOE, our existing data): 12,419")
 # ============================================================================
 # Stitch with the existing 9-year NYC DOE data
 # ============================================================================
-existing = pd.read_csv("C:/Users/iamch/enrollment-forecast/d2_elementary_9yr.csv")
+existing = pd.read_csv(DERIVED / "d2_elementary_9yr.csv")
 
 # We use NYC DOE School Name (from existing data) rather than NYSED's ENTITY_NAME
 # for consistency; NYSED uses "PS 41 GREENWICH VILLAGE", NYC DOE has "P.S. 041 ..."
@@ -118,6 +119,6 @@ matched_out = matched[final_cols]
 # Concat and save
 stitched = pd.concat([existing[final_cols], matched_out], ignore_index=True)
 stitched = stitched.sort_values(["DBN", "year_start" if "year_start" in stitched.columns else "Year"]).reset_index(drop=True)
-stitched.to_csv("C:/Users/iamch/enrollment-forecast/d2_elementary_12yr.csv", index=False)
+stitched.to_csv(DERIVED / "d2_elementary_12yr.csv", index=False)
 print(f"\nSaved stitched 12-year dataset (2013-14 through 2024-25) to d2_elementary_12yr.csv")
 print(f"Total rows: {len(stitched)}, unique schools: {stitched['DBN'].nunique()}")

@@ -1,8 +1,9 @@
 """Step 4: check schema compatibility between 2013-18 and 2017-22 datasets, then stitch."""
 import pandas as pd
+from paths import RAW
 
-old = pd.read_csv("C:/Users/iamch/enrollment-forecast/demographic_snapshot_2013_2018.csv")
-new = pd.read_csv("C:/Users/iamch/enrollment-forecast/demographic_snapshot.csv")
+old = pd.read_csv(RAW / "demographic_snapshot_2013_2018.csv")
+new = pd.read_csv(RAW / "demographic_snapshot.csv")
 
 print("=== OLD shape ===", old.shape)
 print("=== OLD years ===", sorted(old["Year"].unique()) if "Year" in old.columns else "no Year col")

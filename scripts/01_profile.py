@@ -1,7 +1,8 @@
 """Step 1: profile the raw dataset."""
 import pandas as pd
+from paths import RAW
 
-df = pd.read_csv("C:/Users/iamch/enrollment-forecast/demographic_snapshot.csv")
+df = pd.read_csv(RAW / "demographic_snapshot.csv")
 
 print("=== SHAPE ===")
 print(df.shape)

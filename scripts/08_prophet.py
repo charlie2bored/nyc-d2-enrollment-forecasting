@@ -24,6 +24,7 @@ import warnings
 import logging
 import numpy as np
 import pandas as pd
+from paths import DERIVED, OUTPUT
 
 warnings.filterwarnings("ignore")
 logging.getLogger("prophet").setLevel(logging.ERROR)
@@ -37,7 +38,7 @@ COVID_CHANGEPOINT = pd.Timestamp("2020-09-01")
 FORECAST_YEARS = [2022, 2023, 2024]
 INTERVAL = 0.80
 
-df = pd.read_csv("C:/Users/iamch/enrollment-forecast/d2_elementary_9yr.csv")
+df = pd.read_csv(DERIVED / "d2_elementary_9yr.csv")
 df["ds"] = pd.to_datetime(df["ds"])
 df["year_start"] = df["ds"].dt.year
 
@@ -82,12 +83,12 @@ for dbn, school_df in df.groupby("DBN"):
         })
 
 prophet_df = pd.DataFrame(forecasts)
-prophet_df.to_csv("C:/Users/iamch/enrollment-forecast/forecasts_prophet.csv", index=False)
+prophet_df.to_csv(OUTPUT / "forecasts_prophet.csv", index=False)
 
 # ----------------------------------------------------------------------------
 # Compare to piecewise linear
 # ----------------------------------------------------------------------------
-pw = pd.read_csv("C:/Users/iamch/enrollment-forecast/forecasts_piecewise.csv")
+pw = pd.read_csv(OUTPUT / "forecasts_piecewise.csv")
 pw_base = pw[(pw["scenario"] == "base") & (pw["year_start"].isin(FORECAST_YEARS))]
 pr_fc = prophet_df[prophet_df["scenario"] == "prophet_forecast"]
 

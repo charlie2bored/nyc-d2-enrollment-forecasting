@@ -10,14 +10,15 @@ Changes from version 1
 - dim_school: risk_flag recomputed against 2024-25 vs pre-COVID baseline
 """
 import pandas as pd
+from paths import DERIVED, OUTPUT, POWERBI
 
 # Load all source data
-pw = pd.read_csv("C:/Users/iamch/enrollment-forecast/forecasts_piecewise.csv")
-pr = pd.read_csv("C:/Users/iamch/enrollment-forecast/forecasts_prophet.csv")
-summary = pd.read_csv("C:/Users/iamch/enrollment-forecast/school_summary_piecewise.csv")
-excluded = pd.read_csv("C:/Users/iamch/enrollment-forecast/schools_excluded.csv")
-backtest = pd.read_csv("C:/Users/iamch/enrollment-forecast/backtest.csv")
-income = pd.read_csv("C:/Users/iamch/enrollment-forecast/school_income.csv")
+pw = pd.read_csv(OUTPUT / "forecasts_piecewise.csv")
+pr = pd.read_csv(OUTPUT / "forecasts_prophet.csv")
+summary = pd.read_csv(OUTPUT / "school_summary_piecewise.csv")
+excluded = pd.read_csv(OUTPUT / "schools_excluded.csv")
+backtest = pd.read_csv(OUTPUT / "backtest.csv")
+income = pd.read_csv(DERIVED / "school_income.csv")
 
 # ============================================================================
 # Unified fact_forecasts table
@@ -51,7 +52,7 @@ fact_out = fact[["DBN", "year_start", "school_year", "scenario", "model",
                  "yhat", "yhat_lower", "yhat_upper", "is_forecast"]].rename(columns={
     "yhat": "Enrollment", "yhat_lower": "Enrollment_Lower", "yhat_upper": "Enrollment_Upper"
 })
-fact_out.to_csv("C:/Users/iamch/enrollment-forecast/fact_forecasts.csv", index=False)
+fact_out.to_csv(POWERBI / "fact_forecasts.csv", index=False)
 
 # ============================================================================
 # dim_school with updated risk flags and current enrollment
@@ -100,7 +101,7 @@ excluded_minimal = excluded.rename(columns={"reason": "Exclusion_Reason"})[
 
 dim_school = pd.concat([dim_school, excluded_minimal], ignore_index=True)
 dim_school["Exclusion_Reason"] = dim_school["Exclusion_Reason"].fillna("")
-dim_school.to_csv("C:/Users/iamch/enrollment-forecast/dim_school.csv", index=False)
+dim_school.to_csv(POWERBI / "dim_school.csv", index=False)
 
 # ============================================================================
 # dim_year (now 2013-14 through 2027-28 = 15 years)
@@ -115,7 +116,7 @@ dim_year = pd.DataFrame({
     "is_post_covid_observed": [y in (2020, 2021, 2022, 2023, 2024) for y in years],
     "is_backtest_window": [y in (2022, 2023, 2024) for y in years],
 })
-dim_year.to_csv("C:/Users/iamch/enrollment-forecast/dim_year.csv", index=False)
+dim_year.to_csv(POWERBI / "dim_year.csv", index=False)
 
 # ============================================================================
 # fact_backtest: forecasts vs actuals for 2022-25
@@ -128,7 +129,7 @@ bt_out = bt[["DBN", "year_start", "school_year", "scenario", "model",
     "forecast": "Forecast", "actual": "Actual",
     "error": "Error", "abs_error": "Abs_Error", "pct_error": "Pct_Error"
 })
-bt_out.to_csv("C:/Users/iamch/enrollment-forecast/fact_backtest.csv", index=False)
+bt_out.to_csv(POWERBI / "fact_backtest.csv", index=False)
 
 # ============================================================================
 # Print summary

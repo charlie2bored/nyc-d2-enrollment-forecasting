@@ -211,17 +211,32 @@ enrollment-forecast/
 
 ## How to reproduce
 
+Requires Python 3.10+. All scripts use repo-relative paths and run on macOS,
+Linux, or Windows from a fresh clone.
+
 ```bash
+# 1. Install dependencies
 pip install pandas numpy statsmodels scipy prophet access-parser
 
-# Set Census API key (free: https://api.census.gov/data/key_signup.html)
-$env:CENSUS_API_KEY = "your-key-here"
+# 2. Get a Census API key (free, instant): https://api.census.gov/data/key_signup.html
+#    macOS / Linux:
+export CENSUS_API_KEY="your-key-here"
+#    Windows PowerShell:
+#    $env:CENSUS_API_KEY = "your-key-here"
 
-# Run scripts in order (each is self-contained and idempotent)
+# 3. (Optional, only for scripts 13-16) Drop the three NYSED .accdb files into
+#    data/raw/nysed/ — see data/raw/nysed/README.md for download instructions.
+#    Scripts 01-12 + 15-16 run without them.
+
+# 4. Run the pipeline (each script is self-contained and idempotent)
 python scripts/01_profile.py
 python scripts/02_d2_elementary.py
 # ... through scripts/16_rebuild_powerbi_model.py
 ```
+
+All inputs and outputs live under `data/`. The scripts resolve their paths
+relative to the repo root via `scripts/paths.py`, so no editing is needed
+after cloning.
 
 The Power BI dashboard imports the four star-schema CSVs from `data/powerbi/`:
 - `fact_forecasts.csv`, `fact_backtest.csv`, `dim_school.csv`, `dim_year.csv`

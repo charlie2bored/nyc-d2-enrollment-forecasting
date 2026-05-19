@@ -1,9 +1,10 @@
 """Step 5: stitch the two datasets, verify 2017-18 overlap, produce 9-year time series."""
 import pandas as pd
+from paths import DERIVED, RAW
 
-old = pd.read_csv("C:/Users/iamch/enrollment-forecast/demographic_snapshot_2013_2018.csv")
-new = pd.read_csv("C:/Users/iamch/enrollment-forecast/demographic_snapshot.csv")
-dbns = pd.read_csv("C:/Users/iamch/enrollment-forecast/d2_elementary_dbns.csv")["DBN"].tolist()
+old = pd.read_csv(RAW / "demographic_snapshot_2013_2018.csv")
+new = pd.read_csv(RAW / "demographic_snapshot.csv")
+dbns = pd.read_csv(DERIVED / "d2_elementary_dbns.csv")["DBN"].tolist()
 
 elem_grade_cols = ["Grade K", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5"]
 keep_cols = ["DBN", "School Name", "Year"] + elem_grade_cols
@@ -58,5 +59,5 @@ print(river[["Year"] + elem_grade_cols + ["k5_enroll"]].to_string(index=False))
 
 # Save stitched long-format
 out = stitched[["DBN", "School Name", "Year", "ds", "k5_enroll"] + elem_grade_cols]
-out.to_csv("C:/Users/iamch/enrollment-forecast/d2_elementary_9yr.csv", index=False)
+out.to_csv(DERIVED / "d2_elementary_9yr.csv", index=False)
 print(f"\nSaved 9-year stitched data ({len(out)} rows) to d2_elementary_9yr.csv")

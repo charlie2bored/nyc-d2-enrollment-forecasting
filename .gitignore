@@ -1,7 +1,8 @@
 # NYSED raw databases (22 MB each — too big for git, and not needed once
 # the 12-year stitched CSV is generated). Anyone reproducing can re-download
-# via the URLs documented in script 14.
-nysed/
+# via the instructions in data/raw/nysed/README.md.
+data/raw/nysed/*.accdb
+data/raw/nysed/*/
 
 # Python
 __pycache__/

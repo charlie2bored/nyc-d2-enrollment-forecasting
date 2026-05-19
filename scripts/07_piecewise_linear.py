@@ -38,6 +38,7 @@ Phase-in handling
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+from paths import DERIVED, OUTPUT
 
 # ----------------------------------------------------------------------------
 # Config
@@ -56,7 +57,7 @@ INTERVAL = 0.80  # 80% prediction interval
 # ----------------------------------------------------------------------------
 # Load data
 # ----------------------------------------------------------------------------
-df = pd.read_csv("C:/Users/iamch/enrollment-forecast/d2_elementary_9yr.csv")
+df = pd.read_csv(DERIVED / "d2_elementary_9yr.csv")
 df["year_start"] = df["Year"].str[:4].astype(int)
 
 # ----------------------------------------------------------------------------
@@ -222,9 +223,9 @@ forecasts_df = pd.DataFrame(all_forecasts)
 summary_df = pd.DataFrame(school_summary)
 excluded_df = pd.DataFrame(excluded)
 
-forecasts_df.to_csv("C:/Users/iamch/enrollment-forecast/forecasts_piecewise.csv", index=False)
-summary_df.to_csv("C:/Users/iamch/enrollment-forecast/school_summary_piecewise.csv", index=False)
-excluded_df.to_csv("C:/Users/iamch/enrollment-forecast/schools_excluded.csv", index=False)
+forecasts_df.to_csv(OUTPUT / "forecasts_piecewise.csv", index=False)
+summary_df.to_csv(OUTPUT / "school_summary_piecewise.csv", index=False)
+excluded_df.to_csv(OUTPUT / "schools_excluded.csv", index=False)
 
 # ----------------------------------------------------------------------------
 # Print summary

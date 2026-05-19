@@ -8,6 +8,7 @@ forecasts. This avoids any contamination from previously-written files.
 """
 import warnings
 import logging
+from paths import DERIVED, OUTPUT
 warnings.filterwarnings("ignore")
 logging.getLogger("prophet").setLevel(logging.ERROR)
 logging.getLogger("cmdstanpy").setLevel(logging.ERROR)
@@ -25,7 +26,7 @@ EXCLUDE_DBNS = ["02M281", "02M340"]
 PHASE_IN_TRUNCATE = {"02M151": 2014, "02M267": 2015, "02M343": 2017, "02M527": 2017}
 INTERVAL = 0.80
 
-df_12yr = pd.read_csv("C:/Users/iamch/enrollment-forecast/d2_elementary_12yr.csv")
+df_12yr = pd.read_csv(DERIVED / "d2_elementary_12yr.csv")
 df_12yr["year_start"] = df_12yr["Year"].str[:4].astype(int)
 df_12yr = df_12yr.sort_values(["DBN", "year_start"]).reset_index(drop=True)
 
@@ -171,7 +172,7 @@ for dbn, school_df in df_12yr.groupby("DBN"):
         })
 
 backtest = pd.DataFrame(backtest_rows)
-backtest.to_csv("C:/Users/iamch/enrollment-forecast/backtest.csv", index=False)
+backtest.to_csv(OUTPUT / "backtest.csv", index=False)
 
 print("=" * 70)
 print("BACKTEST: 2022-25 forecasts vs NYSED actuals")
@@ -264,9 +265,9 @@ forecasts_df = pd.DataFrame(all_forecasts)
 summary_df = pd.DataFrame(school_summary)
 excluded_df = pd.DataFrame(excluded)
 
-forecasts_df.to_csv("C:/Users/iamch/enrollment-forecast/forecasts_piecewise.csv", index=False)
-summary_df.to_csv("C:/Users/iamch/enrollment-forecast/school_summary_piecewise.csv", index=False)
-excluded_df.to_csv("C:/Users/iamch/enrollment-forecast/schools_excluded.csv", index=False)
+forecasts_df.to_csv(OUTPUT / "forecasts_piecewise.csv", index=False)
+summary_df.to_csv(OUTPUT / "school_summary_piecewise.csv", index=False)
+excluded_df.to_csv(OUTPUT / "schools_excluded.csv", index=False)
 
 # Prophet — refit on full 12 years
 prophet_forecasts = []
@@ -288,7 +289,7 @@ for dbn, school_df in df_12yr.groupby("DBN"):
             "yhat_lower": float(row["yhat_lower"]),
             "yhat_upper": float(row["yhat_upper"]),
         })
-pd.DataFrame(prophet_forecasts).to_csv("C:/Users/iamch/enrollment-forecast/forecasts_prophet.csv", index=False)
+pd.DataFrame(prophet_forecasts).to_csv(OUTPUT / "forecasts_prophet.csv", index=False)
 
 
 print("\n" + "=" * 70)
