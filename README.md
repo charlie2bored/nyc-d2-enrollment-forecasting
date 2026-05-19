@@ -1,5 +1,7 @@
 # NYC District 2 Elementary Enrollment Forecasting
 
+> _I built a back-tested forecasting pipeline for 30 NYC public elementary schools to answer one question: do analyst-bounded scenario forecasts beat off-the-shelf ML (Prophet) at projecting post-COVID enrollment recovery? Spoiler — they did, by 2×._
+
 **Multi-scenario enrollment forecasts for 30 NYC public elementary schools, back-tested against post-publication actuals.**
 
 This project demonstrates a complete forecasting workflow:
@@ -157,7 +159,23 @@ enrollment-forecast/
 ├── D2_Elementary_Enrollment_Forecast.pbix  (Power BI Desktop dashboard)
 ├── screenshots/                        (dashboard screenshots)
 │
-├── 01_profile.py → 16_rebuild_powerbi_model.py  (numbered analysis scripts)
+├── scripts/                            (numbered analysis pipeline, 01 → 16)
+│   ├── 01_profile.py
+│   ├── 02_d2_elementary.py
+│   ├── 03_covid_shape.py
+│   ├── 04_stitch_check.py
+│   ├── 05_stitch.py
+│   ├── 06_phase_in_check.py
+│   ├── 07_piecewise_linear.py
+│   ├── 08_prophet.py
+│   ├── 09_powerbi_model.py
+│   ├── 10_school_zip_mapping.py
+│   ├── 11_acs_join.py
+│   ├── 12_fix_tract_matches.py
+│   ├── 13_inspect_nysed.py
+│   ├── 14_extract_recent_actuals.py
+│   ├── 15_backtest_and_reforecast.py
+│   └── 16_rebuild_powerbi_model.py
 │
 ├── Raw data
 │   ├── demographic_snapshot.csv               (NYC DOE 2017-22)
@@ -196,9 +214,9 @@ pip install pandas numpy statsmodels scipy prophet access-parser
 $env:CENSUS_API_KEY = "your-key-here"
 
 # Run scripts in order (each is self-contained and idempotent)
-python 01_profile.py
-python 02_d2_elementary.py
-# ... through 16_rebuild_powerbi_model.py
+python scripts/01_profile.py
+python scripts/02_d2_elementary.py
+# ... through scripts/16_rebuild_powerbi_model.py
 ```
 
 The Power BI dashboard imports the four star-schema CSVs:
