@@ -177,30 +177,34 @@ enrollment-forecast/
 │   ├── 15_backtest_and_reforecast.py
 │   └── 16_rebuild_powerbi_model.py
 │
-├── Raw data
-│   ├── demographic_snapshot.csv               (NYC DOE 2017-22)
-│   ├── demographic_snapshot_2013_2018.csv     (NYC DOE 2013-18)
-│   └── nysed/                                 (NYSED BEDS Day enrollment, see .gitignore)
-│
-├── Derived data
-│   ├── d2_elementary_dbns.csv          (32 D2 elementary DBNs)
-│   ├── d2_elementary_12yr.csv          (12-year stitched K-5 time series)
-│   ├── school_tract_mapping.csv        (school → 2020 census tract)
-│   ├── school_income.csv               (school → ACS median household income)
-│   └── acs_manhattan_income.csv        (ACS 5-year 2022, all Manhattan tracts)
-│
-├── Model output
-│   ├── forecasts_piecewise.csv         (per-school forecasts, all scenarios)
-│   ├── forecasts_prophet.csv           (Prophet comparison)
-│   ├── school_summary_piecewise.csv    (per-school driver decomposition)
-│   ├── schools_excluded.csv            (2 excluded schools + reason)
-│   └── backtest.csv                    (2022-25 forecasts vs actuals)
-│
-└── Power BI star schema
-    ├── fact_forecasts.csv     (706 rows: school × year × scenario × model)
-    ├── fact_backtest.csv      (348 rows: backtest forecasts vs actuals)
-    ├── dim_school.csv         (32 schools with attributes)
-    └── dim_year.csv           (15 years with flags)
+└── data/
+    ├── raw/                                (source NYC DOE / NYSED files)
+    │   ├── demographic_snapshot.csv               (NYC DOE 2017-22)
+    │   ├── demographic_snapshot_2013_2018.csv     (NYC DOE 2013-18)
+    │   ├── school_locations.csv                   (NYC DOE school directory)
+    │   └── nysed/                                 (NYSED BEDS Day enrollment, see .gitignore)
+    │
+    ├── derived/                            (intermediate joins + lookups)
+    │   ├── d2_elementary_dbns.csv          (32 D2 elementary DBNs)
+    │   ├── d2_elementary_9yr.csv           (9-year K-5 time series)
+    │   ├── d2_elementary_12yr.csv          (12-year stitched K-5 time series)
+    │   ├── d2_elementary_timeseries.csv    (long-format time series)
+    │   ├── school_tract_mapping.csv        (school → 2020 census tract)
+    │   ├── school_income.csv               (school → ACS median household income)
+    │   └── acs_manhattan_income.csv        (ACS 5-year 2022, all Manhattan tracts)
+    │
+    ├── output/                             (model output)
+    │   ├── forecasts_piecewise.csv         (per-school forecasts, all scenarios)
+    │   ├── forecasts_prophet.csv           (Prophet comparison)
+    │   ├── school_summary_piecewise.csv    (per-school driver decomposition)
+    │   ├── schools_excluded.csv            (2 excluded schools + reason)
+    │   └── backtest.csv                    (2022-25 forecasts vs actuals)
+    │
+    └── powerbi/                            (star schema imported by the dashboard)
+        ├── fact_forecasts.csv              (706 rows: school × year × scenario × model)
+        ├── fact_backtest.csv               (348 rows: backtest forecasts vs actuals)
+        ├── dim_school.csv                  (32 schools with attributes)
+        └── dim_year.csv                    (15 years with flags)
 ```
 
 ---
@@ -219,7 +223,7 @@ python scripts/02_d2_elementary.py
 # ... through scripts/16_rebuild_powerbi_model.py
 ```
 
-The Power BI dashboard imports the four star-schema CSVs:
+The Power BI dashboard imports the four star-schema CSVs from `data/powerbi/`:
 - `fact_forecasts.csv`, `fact_backtest.csv`, `dim_school.csv`, `dim_year.csv`
 
 Open `D2_Elementary_Enrollment_Forecast.pbix` in Power BI Desktop. Refresh imports to point to your local copies if needed.
