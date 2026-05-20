@@ -10,7 +10,7 @@ This project demonstrates a complete forecasting workflow:
 3. Validate against subsequent NYSED actuals (2022-25)
 4. Refit on the full 12-year dataset and generate fresh forecasts through 2027-28
 
-> **Headline finding**: The piecewise-linear Base scenario tracked actuals within 9% MAPE. Prophet under-predicted by 19% MAPE — more than 2× the error. The methodological choice of analyst-bounded scenarios over single-point ML defaults was empirically validated.
+> **Headline finding**: The piecewise-linear Base scenario tracked actuals within 9.5% MAPE. Prophet under-predicted by 20.0% MAPE — more than 2× the error. The methodological choice of analyst-bounded scenarios over single-point ML defaults was empirically validated.
 
 ---
 
@@ -29,9 +29,11 @@ Operational matrix of all 30 schools × 15 years, filterable by scenario and mod
 ![School Grid](screenshots/page2_school_grid.png)
 
 ### Backtest (methodology validation)
-The dashboard's analytical centerpiece: forecasts vs actuals, MAPE comparison by model and scenario, per-school error scatter. The 8.71% (Piecewise Base) vs 19.20% (Prophet) cards at the top quantify the methodology comparison.
+The dashboard's analytical centerpiece: forecasts vs actuals, MAPE comparison by model and scenario, per-school error scatter. The two KPI cards at the top quantify the methodology comparison.
 
-![Backtest](screenshots/page4_backtest.png)
+![Backtest](screenshots/page3_backtest.png)
+
+> _Note on the metric: the dashboard cards display **weighted MAPE** (sum of |errors| ÷ sum of actuals = 8.71% vs 19.20%), while the table further down in this README reports standard **unweighted MAPE** (mean of |error| ÷ |actual| per school-year = 9.5% vs 20.0%). Both metrics agree on the conclusion; the small difference reflects whether larger schools' errors carry proportional weight._
 
 ---
 
@@ -77,7 +79,7 @@ Configured for the data shape: no seasonality (annual data), single known change
 ### Excluded / truncated schools
 
 - **2 excluded**: The River School (02M281) and Sixth Avenue Elementary (02M340) — both phase-in schools that reached K-5 maturity in or after 2018-19, leaving no usable pre-COVID baseline.
-- **4 truncated**: Yorkville (02M151), East Side (02M267), Peck Slip (02M343), PS 527 (02M527) — training data starts at their first fully-populated K-5 year.
+- **4 truncated**: Yorkville Community School (02M151), East Side Elementary (02M267), The Peck Slip School (02M343), PS 527 East Side School for Social Action (02M527) — training data starts at their first fully-populated K-5 year.
 
 ---
 
@@ -125,7 +127,7 @@ System-wide 2027-28 scenario range:
 - **9 Yellow** (10-25% below)
 - **8 Green** (within 10% of baseline or above)
 
-Worst declines: PS 1 Alfred E. Smith (-52%), PS 2 Meyer London (-47%), Yorkville Community (-44%), PS 130 Hernando De Soto (-43%), PS 290 Manhattan New School (-41%).
+Worst declines: PS 1 Alfred E. Smith (-52%), PS 2 Meyer London (-47%), Yorkville Community School (-44%), PS 130 Hernando De Soto (-43%), PS 290 Manhattan New School (-41%).
 
 **Resilient outlier**: PS/IS 217 Roosevelt Island (+13% growth through the entire window). Geographic isolation appears to insulate this school's catchment.
 
@@ -146,6 +148,8 @@ Worst declines: PS 1 Alfred E. Smith (-52%), PS 2 Meyer London (-47%), Yorkville
 
 The **lowest-income quartile** had the largest declines, not the highest. This is consistent with public reporting on Chinatown depopulation during COVID — Asian-American families specifically had elevated outflows that don't fit the "wealthy fled to suburbs" narrative.
 
+The quartile pattern isn't strictly monotonic — Q2 ($125K) shows the smallest decline, with Q3 between Q2 and Q4. With only 7-8 schools per quartile, individual school outliers carry significant weight; the more reliable read is that **Q1 is a clear outlier on the downside while Q2–Q4 cluster within a ~5pp band the data can't reliably distinguish.** The headline finding (income does not predict decline in the way the hypothesis assumed) holds regardless of how you cut the middle quartiles.
+
 This is a case study finding I value: **hypothesis tested, hypothesis refuted, narrative updated to fit the data.**
 
 ---
@@ -156,7 +160,6 @@ This is a case study finding I value: **hypothesis tested, hypothesis refuted, n
 enrollment-forecast/
 ├── README.md                          (this file)
 ├── CASE_STUDY_OUTLINE.md              (case study writeup outline)
-├── D2_Elementary_Enrollment_Forecast.pbix  (Power BI Desktop dashboard)
 ├── screenshots/                        (dashboard screenshots)
 │
 ├── scripts/                            (numbered analysis pipeline, 01 → 16)
@@ -200,7 +203,8 @@ enrollment-forecast/
     │   ├── schools_excluded.csv            (2 excluded schools + reason)
     │   └── backtest.csv                    (2022-25 forecasts vs actuals)
     │
-    └── powerbi/                            (star schema imported by the dashboard)
+    └── powerbi/                            (star schema + dashboard file)
+        ├── D2_Elementary_Enrollment_Forecast.pbix  (Power BI Desktop dashboard)
         ├── fact_forecasts.csv              (706 rows: school × year × scenario × model)
         ├── fact_backtest.csv               (348 rows: backtest forecasts vs actuals)
         ├── dim_school.csv                  (32 schools with attributes)
@@ -241,7 +245,7 @@ after cloning.
 The Power BI dashboard imports the four star-schema CSVs from `data/powerbi/`:
 - `fact_forecasts.csv`, `fact_backtest.csv`, `dim_school.csv`, `dim_year.csv`
 
-Open `D2_Elementary_Enrollment_Forecast.pbix` in Power BI Desktop. Refresh imports to point to your local copies if needed.
+Open `data/powerbi/D2_Elementary_Enrollment_Forecast.pbix` in Power BI Desktop. Refresh imports to point to your local copies if needed (the .pbix ships with absolute paths from the original author's machine; update Power Query data sources to point to `data/powerbi/` on your clone).
 
 ---
 
