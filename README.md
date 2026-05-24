@@ -137,20 +137,20 @@ Worst declines: PS 1 Alfred E. Smith (-52%), PS 2 Meyer London (-47%), Yorkville
 
 **Initial hypothesis**: "Wealthy downtown catchments were hit hardest by COVID." Based on the salient examples of PS 41 Greenwich Village, PS 234 Independence, PS 290 Manhattan New School — all in high-income West Village / Tribeca catchments.
 
-**Result**: Hypothesis fails. Pearson correlation between catchment median household income and pct enrollment change is **+0.14** — essentially zero, and slightly in the wrong direction.
+**Result**: Hypothesis fails — the data points in the *opposite* direction. Pearson correlation between catchment median household income and pct enrollment change is **+0.28**: a moderate positive relationship in which higher-income catchments held up *better*, not worse.
 
-| Income quartile | Mean income | Mean enrollment decline |
-|---|---:|---:|
-| Q1 (lowest, Chinatown / LES) | $69K | **-24.2%** (worst) |
-| Q2 | $125K | -16.7% (best) |
-| Q3 | $151K | -20.1% |
-| Q4 (highest) | $195K | -17.3% |
+| Income quartile | Mean income | n | Mean enrollment change vs pre-COVID |
+|---|---:|---:|---:|
+| Q1 (lowest, Chinatown / LES) | $69K | 8 | **-27.9%** (worst) |
+| Q2 | $125K | 7 | -20.3% |
+| Q3 | $151K | 7 | -17.0% |
+| Q4 (highest, UES / Tribeca / Roosevelt Island) | $195K | 8 | **-9.7%** (best) |
 
-The **lowest-income quartile** had the largest declines, not the highest. This is consistent with public reporting on Chinatown depopulation during COVID — Asian-American families specifically had elevated outflows that don't fit the "wealthy fled to suburbs" narrative.
+The pattern is monotonic: every step up the income ladder corresponds to a smaller decline, and the lowest-income quartile shows declines roughly 3× larger than the highest. This is consistent with public reporting on Chinatown depopulation during COVID — Asian-American families specifically had elevated outflows that drive much of Q1's decline, which doesn't fit the "wealthy fled to suburbs" narrative the original hypothesis assumed.
 
-The quartile pattern isn't strictly monotonic — Q2 ($125K) shows the smallest decline, with Q3 between Q2 and Q4. With only 7-8 schools per quartile, individual school outliers carry significant weight; the more reliable read is that **Q1 is a clear outlier on the downside while Q2–Q4 cluster within a ~5pp band the data can't reliably distinguish.** The headline finding (income does not predict decline in the way the hypothesis assumed) holds regardless of how you cut the middle quartiles.
+A caveat on granularity: with 7–8 schools per quartile, individual outliers still matter. PS 41 Greenwich Village (down 40%) and PS 234 Independence (down 33%) keep Q4 from looking even better, and PS 33 Chelsea Prep (down only 2%) keeps Q1 from looking even worse. The aggregate ordering is clean; per-school variance is large.
 
-This is a case study finding I value: **hypothesis tested, hypothesis refuted, narrative updated to fit the data.**
+This is a case study finding I value: **hypothesis tested, hypothesis refuted, narrative updated to fit the data — and the refutation got sharper, not weaker, as more years of post-COVID data arrived.**
 
 ---
 

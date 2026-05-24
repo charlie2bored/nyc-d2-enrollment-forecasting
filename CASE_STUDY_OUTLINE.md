@@ -83,11 +83,11 @@ This is the single strongest analytical finding in the case study: **the methodo
 - Worst declines: PS 1 Alfred E. Smith (-52%), PS 2 Meyer London (-47%), Yorkville Community (-44%), PS 130 Hernando De Soto (-43%), PS 290 Manhattan New School (-41%).
 - **Resilient outlier persists**: PS/IS 217 Roosevelt Island grew through the entire window. Geographic isolation continues to insulate this school's enrollment.
 
-### Driver analysis (income vs decline) — unchanged finding, now stronger with 3 more years of data
+### Driver analysis (income vs decline) — finding sharpened with 3 more years of data
 
-- Pearson correlation between catchment median household income and pct enrollment change: ~0.14 (essentially zero).
-- The lowest-income quartile (Chinatown / Lower East Side) still has the largest declines. PS 1, PS 2, and PS 42 (Chinatown/LES) lead the Red list.
-- The "wealthy families left" narrative remains refuted by the data.
+- Pearson correlation between catchment median household income and pct enrollment change: **+0.28** (moderate positive). With NYSED 2022-25 actuals folded in, the signal roughly doubled vs. the original 9-year analysis (~+0.14) — and the quartile pattern is now monotonic (Q1 -27.9% → Q4 -9.7%), not noisy.
+- The lowest-income quartile (Chinatown / Lower East Side) has the largest declines. PS 2, PS 42, PS 124, and PS 130 (all Q1) sit on the Red list.
+- The "wealthy families left" narrative is refuted in the opposite direction: wealth correlates with enrollment *resilience*, not flight.
 
 ## 6. Limitations & caveats
 
